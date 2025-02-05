@@ -123,7 +123,7 @@ fork{
 
   // clean synthDefs names as e.g. 'dirt_squiz2' and get only 'squiz'
   // as they are in ~dirt.modules
-  q.keys_cleaner = { |env key|
+  q.key_cleaner = { |env key|
     if ( key.beginsWith("dirt_") ) { key = key.replace("dirt_", "")};
     if (key.find("_").notNil) {
       var index = key.find("_");
@@ -133,7 +133,7 @@ fork{
   };
 
   q.filter_out_synths_and_fx = { |env key|
-  ( not(key.contains("sample")) and: not(key.beginsWith("in")) .and (key != "envelope") .and (key != "vowel") .and (key != "global") .and ( not( key.contains ("long")) ) .and (key != "cyclo")  .and (key != "gate") .and (key != "debug") .and (key != "tutorial") .and (key !="rms") and: (key != "monitor") and: (key != "out") .and (key != "shape") )
+  ( not(key.contains("sample")) and: not(key.beginsWith("in")) .and (key != "envelope") .and (key != "vowel") .and (key != "global") .and ( not( key.contains ("long")) ) .and (key != "cyclo")  .and (key != "gate") .and (key != "debug") .and (key != "tutorial") .and (key !="rms") .and (key != "monitor") .and (key != "out") .and (key != "shape") .and (key != "superfm") )
   };
 
   q.filter_out_ctrls = { |env, name|
@@ -148,9 +148,9 @@ fork{
   ( key.beginsWith("super") or: (key.beginsWith("sos")) or: (key.endsWith("sin")) or: (key == "imp") or: (key == "gabor") )
   };
 
-  q.write_controls = { |env, file, key|
+  q.write_into_file = { |env, file, key, clean_key|
     var controls = SynthDescLib.match(key).controls;
-    file.write(format("\n%:\n", key ));
+    file.write(format("\n%:\n", clean_key ));
     controls.do { |ctrl|
       var value = ctrl.defaultValue.round(0.01);
       if ( q.filter_out_ctrls(ctrl.name) ) {
@@ -169,13 +169,13 @@ fork{
     var file, controls, clean_key;
     q.new_synthDescs.asArray.sort.do { |key|
       key = key.asString;
-      clean_key = q.keys_cleaner(key);
+      clean_key = q.key_cleaner(key);
       if ( q.filter_out_synths_and_fx(clean_key) ) {
         if ( q.is_fx(key) )
         { file = q.f_fx;
-            postf("fx: %\n", key);
+            postf("fx: %\n", clean_key);
             if ( not(q.allFxs.includes(clean_key)) ) {
-              q.write_controls(file, key);
+              q.write_into_file(file, key, clean_key);
               q.allFxs.add(clean_key);
             };
           }
@@ -183,9 +183,9 @@ fork{
             if(q.is_synth(key))
             {
                 file = q.f_synths;
-                postf("synth: %\n", key);
+                postf("synth: %\n", clean_key);
                 if ( not(q.allSynths.includes(clean_key)) ) {
-                  q.write_controls(file, key);
+                  q.write_into_file(file, key, clean_key);
                   q.allSynths.add(clean_key);
                 };
               } { "excluded synth or fx".postln; key.postln; };
