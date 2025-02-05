@@ -1,2 +1,2 @@
 q = q ? ();
-q.addedSynthDefs = q.addedSynthDefs ? SynthDescLib.global.synthDescs.keys;
+q.addedSynthDescs = q.addedSynthDescs ? SynthDescLib.global.synthDescs.keys;

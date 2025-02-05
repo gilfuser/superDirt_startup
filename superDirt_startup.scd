@@ -2,7 +2,7 @@ q = q ? ();
 
 // NOTE: tidal_snipgen depends on this for logging fx and synths:
 q.previous_synthDescs = q.previous_synthDescs ? SynthDescLib.global.synthDescs.keys;
-q.previous_synthDescs.collect{|x| x.postln};
+// q.previous_synthDescs.collect{|x| x.postln};
 q.numOrbs = q.numOrbs ? 16; // escolher quantas orbits serão usadas em Ndefs
 
 if ( currentEnvironment.class == ProxySpace ) { topEnvironment.push };
@@ -20,6 +20,7 @@ fork{
 
   ">>>>>> check point from SuperDirt Startup <<<<<<".postln;
 
+  
   // "~/SuperCollider/instruments/01b_my_tidal_instruments.scd".standardizePath.load;
   0.2.wait;
 
@@ -55,8 +56,16 @@ fork{
     }).play.vol_(0.5);
   }.play;
   );
+
 // FIX: *** ERROR: SynthDef dirt_global_wah2 not found
 // "~/SuperCollider/FX/myTidalFx.scd".standardizePath.load;
+
+// TODO: move this to the README
+// NOTE: put your own instruments and fx for Tidal after ~dirt.start
+// and tidal_snipgen
+// tidal_nipgen catches names beggining as 'dirt_' as fx
+// and names beggining as 'super'
+
   wait(8);
 "tidal_snipgen.scd".loadRelative;
 "tidal_sg_samp_monitor.scd".loadRelative;
