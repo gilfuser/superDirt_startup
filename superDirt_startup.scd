@@ -1,8 +1,8 @@
 q = q ? ();
 
 // NOTE: tidal_snipgen depends on this for logging fx and synths:
-q.previous_synthDescs = q.previous_synthDescs ? SynthDescLib.global.synthDescs.keys;
-// q.previous_synthDescs.collect{|x| x.postln};
+q.added_synthDescs = q.added_synthDescs ? SynthDescLib.global.synthDescs.keys;
+// q.added_synthDescs.collect{|x| x.postln};
 q.numOrbs = q.numOrbs ? 16; // escolher quantas orbits serão usadas em Ndefs
 
 if ( currentEnvironment.class == ProxySpace ) { topEnvironment.push };

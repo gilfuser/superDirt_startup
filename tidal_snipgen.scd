@@ -159,7 +159,7 @@ fork{
       };
     };
   };
-  q.new_synthDescs = q.new_synthDescs ?  SynthDescLib.global.synthDescs.keys - q.previous_synthDescs;
+  q.new_synthDescs = q.new_synthDescs ?  SynthDescLib.global.synthDescs.keys - q.added_synthDescs;
   q.allFxs = Set[];
   q.allSynths = Set[];
   q.f_synths = File( q.tsnipgen_temp_dir +/+ "dirt_synths.yaml".standardizePath, "w");
